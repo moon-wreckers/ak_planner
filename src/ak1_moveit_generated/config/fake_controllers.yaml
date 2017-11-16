@@ -1,0 +1,12 @@
+controller_list:
+  - name: fake_front_wheels_controller
+    joints:
+      - front_left_leg_to_wheel_joint
+      - front_right_leg_to_wheel_joint
+  - name: fake_back_wheels_controller
+    joints:
+      - back_left_leg_to_wheel_joint
+      - back_right_leg_to_wheel_joint
+  - name: fake_virtual_joint_group_controller
+    joints:
+      - virtual_joint

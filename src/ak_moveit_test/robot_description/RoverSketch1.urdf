@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<robot name="RoverSketch1">
+
+	<material name="grey">
+		<color rgba="169 169 169 1" />
+	</material>
+
+	<material name="black">
+		<color rgba="0 0 0 1" />
+	</material>
+
+	<material name="red">
+		<color rgba="1 0 0 1" />
+	</material>
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.80 0.5 0.3"/>
+      </geometry>
+
+			<material name="red" />
+
+      <origin rpy="0 0 0" xyz="0 0 0.15" />
+    </visual>
+
+		<collision>
+			<geometry>
+				<box size="0.80 0.5 0.3"/>
+			</geometry>
+			
+			<origin rpy="0 0 0" xyz="0 0 0.15" />
+		</collision>
+
+  </link>
+
+<!-- FRONT RIGHT LEG _ FRONT RIGHT WHEEL -->
+
+  <link name="front_right_leg">
+    <visual>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<material name="grey" />
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.05 0" />
+    </visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.05 0" />
+		</collision>
+
+  </link>
+
+  <joint name="base_to_front_right_leg_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="front_right_leg" />
+		<origin xyz="0.3 -0.25 0.05" />
+  </joint>
+
+
+	<link name="front_right_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<material name="black" />
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.08 0" />
+		</visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.08 0" />
+		</collision>
+
+	</link>
+
+	<joint name="front_right_leg_to_wheel_joint" type="continuous">
+		<parent link="front_right_leg" />
+		<child link="front_right_wheel" />
+		<origin xyz="0 -0.1 0" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+<!-- FRONT LEFT LEG _ FRONT LEFT WHEEL -->
+
+  <link name="front_left_leg">
+    <visual>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<material name="grey" />
+
+			<origin rpy="1.57075 0 0" xyz="0 0.05 0" />
+    </visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 0.05 0" />
+		</collision>
+
+  </link>
+
+	<joint name="base_to_front_left_leg_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="front_left_leg" />
+		<origin xyz="0.3 0.25 0.05" />
+  </joint>
+
+
+	<link name="front_left_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<material name="black" />
+
+			<origin rpy="1.57075 0 0" xyz="0 0.08 0" />
+		</visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 0.08 0" />
+		</collision>
+
+	</link>
+
+	<joint name="front_left_leg_to_wheel_joint" type="continuous">
+		<parent link="front_left_leg" />
+		<child link="front_left_wheel" />
+		<origin xyz="0 0.1 0" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+<!-- BACK RIGHT LEG _ BACK RIGHT WHEEL -->
+
+	<link name="back_right_leg">
+    <visual>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<material name="grey" />
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.05 0" />
+    </visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.05 0" />
+		</collision>		
+
+  </link>
+
+  <joint name="base_to_back_right_leg_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="back_right_leg" />
+		<origin xyz="-0.3 -0.25 0.05" />
+  </joint>
+
+
+	<link name="back_right_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<material name="black" />
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.08 0" />
+		</visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 -0.08 0" />
+		</collision>
+
+	</link>
+
+	<joint name="back_right_leg_to_wheel_joint" type="continuous">
+		<parent link="back_right_leg" />
+		<child link="back_right_wheel" />
+		<origin xyz="0 -0.1 0" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+<!-- BACK LEFT LEG _ BACK LEFT WHEEL -->
+
+  <link name="back_left_leg">
+    <visual>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<material name="grey" />
+
+			<origin rpy="1.57075 0 0" xyz="0 0.05 0" />
+    </visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.1" radius="0.03" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 0.05 0" />
+		</collision>
+
+  </link>
+
+	<joint name="base_to_back_left_leg_joint" type="fixed">
+		<parent link="base_link" />
+		<child link="back_left_leg" />
+		<origin xyz="-0.3 0.25 0.05" />
+  </joint>
+
+
+	<link name="back_left_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<material name="black" />
+
+			<origin rpy="1.57075 0 0" xyz="0 0.08 0" />
+		</visual>
+	
+		<collision>
+			<geometry>
+				<cylinder length="0.16" radius="0.13" />
+			</geometry>
+
+			<origin rpy="1.57075 0 0" xyz="0 0.08 0" />
+		</collision>
+
+	</link>
+
+	<joint name="back_left_leg_to_wheel_joint" type="continuous">
+		<parent link="back_left_leg" />
+		<child link="back_left_wheel" />
+		<origin xyz="0 0.1 0" />
+		<axis xyz="0 1 0" />
+	</joint>
+
+
+</robot>

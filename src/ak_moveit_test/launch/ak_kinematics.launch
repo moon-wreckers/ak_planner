@@ -1,0 +1,15 @@
+<launch>
+
+	<include file="$(find ak1_moveit_generated)/launch/planning_context.launch">
+		<arg name="load_robot_description" value="true" />
+	</include>
+
+	<include file="$(find ak1_moveit_generated)/launch/move_group.launch" />
+
+	<include file="$(find ak1_moveit_generated)/launch/demo.launch" />
+
+	<node name="ak_kinematics_test_node" pkg="ak_moveit_test" type="ak_kinematics_test_node" respawn="false" output="screen">
+		<rosparam command="load" file="$(find ak1_moveit_generated)/config/kinematics.yaml" />
+	</node>
+
+</launch>

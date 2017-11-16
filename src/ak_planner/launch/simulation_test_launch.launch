@@ -1,0 +1,13 @@
+<launch>
+
+	<param name="robot_description_simulation" command="cat $(find ak_planner)/robot_description/RoverSketch1.urdf" />
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+	<!--node name="rover_state_publisher" pkg="robot_publisher" type="rover_state_publisher" /-->
+	<node name="simulation_test_node" pkg="ak_planner" type="simulation_test_node" output="screen" launch-prefix="xterm -e"/>
+	
+
+	<node name="rviz_rover_sim" pkg="rviz" type="rviz" />
+
+</launch>

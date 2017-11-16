@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: ""
+    relative_path: /home/amoeed/Desktop/MRSD_PROJECT/Extra_Files/Autokrawler Model Files/urdf/RoverSketch1.urdf
+  SRDF:
+    relative_path: config/RoverSketch1.srdf
+  CONFIG:
+    author_name: Abdul Moeed Zafar
+    author_email: a.moeed01@gmail.com
+    generated_timestamp: 1509312777
