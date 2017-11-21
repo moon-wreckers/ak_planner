@@ -31,11 +31,11 @@ int main (int argc, char** argv)
 	//---------------------------------------- Testing Dubins Distance -------------------------------------------------------------------
 
 
-	double q0[] = { 2, 1,  (30 * M_PI/180) };
+	double q0[] = { 0, 0,  (0 * M_PI/180) };
 
-    double q1[] = { 2.4562, 1.6098, (40.0 * M_PI/180.0) };
+    double q1[] = { 0.7, -0.2, (-15.0 * M_PI/180.0) }; //
     
-    double turning_radius = 0.5;
+    double turning_radius = 0.99;
     dubins_distance::DubinsPath path;
     dubins_distance::dubins_init( q0, q1, turning_radius, &path);
     dubins_distance::dubins_path_sample_many( &path, printConfiguration, 0.05, NULL);

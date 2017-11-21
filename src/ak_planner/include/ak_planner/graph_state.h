@@ -60,6 +60,8 @@ namespace ak_planner
 		inline void getStateVariablesDiscrete(int& x_coord, int& y_coord, int& theta_coord);
 		
 
+		//For interpolation purposes once path is obtained.
+		// std::vector<std::vector<double> > prim_intermediate_poses_;
 
 	private:
 

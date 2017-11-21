@@ -81,7 +81,14 @@ namespace ak_planner
 		cost_prim_ = 1;
 		heuristic_weight_multiplier_ = heuristic_weight_multiplier;
 
+		//Instantiating motion_primitives_
 		motion_primitives_ = boost::make_shared<MotionPrimitives>();
+
+		//Instantiating motion_primitives_parser_
+		motion_primitives_parser_ = boost::make_shared<MotionPrimitivesParser>();
+		motion_primitives_parser_->readPrimitives();
+
+		assert(motion_primitives_parser_->prim_resolution_ == oc_resolution);
 
 		verbosity_ = false;
 	}	
@@ -95,17 +102,29 @@ namespace ak_planner
 
 	int WeightedAStarPlanner::getDiscreteAngle(double angle)
 	{
-		int NUMOFDIRS = ak_planner_shared_variables::NUM_OF_DIRECTIONS;
-	    /* returns the direction index with respect to the PrimArray */
-	    /* normalize bw 0 to 2pi */
-	    if (angle < 0.0) {
-	        angle += 2 * M_PI;
-	    }
-	    int dir = (int)(angle / (2 * M_PI / NUMOFDIRS) + 0.5);
-	    if (dir == NUMOFDIRS) {
-	        dir = 0;
-	    }
-	    return dir;
+		// int NUMOFDIRS = ak_planner_shared_variables::NUM_OF_DIRECTIONS;
+	 //    /* returns the direction index with respect to the PrimArray */
+	 //    /* normalize bw 0 to 2pi */
+	 //    if (angle < 0.0) {
+	 //        angle += 2 * M_PI;
+	 //    }
+	 //    int dir = (int)(angle / (2 * M_PI / NUMOFDIRS) + 0.5);
+	 //    if (dir == NUMOFDIRS) {
+	 //        dir = 0;
+	 //    }
+	 //    return dir;
+
+		//Starting edit for incorporating Parser
+
+		int angle_id = motion_primitives_parser_->discretizeAngle(angle);
+
+		if(angle_id < 0)
+		{
+			std::cout << "Error here. angle_id: " << angle_id << std::endl;
+			throw 0;
+		}
+
+		return angle_id;
 	}
 
 
@@ -369,33 +388,82 @@ namespace ak_planner
 
 
 
-		std::vector<double> parent_state_variables = graph_state.getStateVariables();
+		// std::vector<double> parent_state_variables = graph_state.getStateVariables();
 
-		int num_of_primitives = motion_primitives_->getNumOfPrim();
-		for(int i = 0 ; i < num_of_primitives ; i++)
+		// int num_of_primitives = motion_primitives_->getNumOfPrim();
+		// for(int i = 0 ; i < num_of_primitives ; i++)
+		// {
+		// 	double x_new;
+		// 	double y_new;
+		// 	double theta_new;
+
+		// 	motion_primitives_->applyPrimitive(i, parent_state_variables[0], parent_state_variables[1], parent_state_variables[2], 
+		// 		x_new, y_new, theta_new);
+
+			
+		// 	GraphState successor_state;
+		// 	successor_state.setPrimitiveId(i);
+		// 	successor_state.setStateType(GraphState::SINGLE_POINT);
+		// 	successor_state.setStateVariables(x_new, y_new, theta_new);
+
+		// 	int x_disc, y_disc, theta_disc;
+		// 	// std::cout << "x_disc: " << x_disc << "y_disc: " << y_disc << "theta_disc: " << theta_disc << std::endl;
+		// 	getDiscretePose(x_new, y_new, theta_new, x_disc, y_disc, theta_disc);
+		// 	// std::cout << "x_disc: " << x_disc << "y_disc: " << y_disc << "theta_disc: " << theta_disc << std::endl;			
+		// 	successor_state.setStateVariablesDiscrete(x_disc, y_disc, theta_disc);
+
+		// 	successor_states.push_back(successor_state);
+
+		// }
+
+
+		// Starting to incorporate Parser.
+
+		int x_disc, y_disc, theta_disc;
+		std::vector<double> state_variables;
+		state_variables = graph_state.getStateVariables();
+		graph_state.getStateVariablesDiscrete(x_disc, y_disc, theta_disc);
+
+		std::vector<TaskSpacePrimitive> primitives_list = motion_primitives_parser_->getPrimitiveListFromStartAngleID(theta_disc);
+
+		for(int i=0 ; i<primitives_list.size() ; i++)
 		{
-			double x_new;
-			double y_new;
-			double theta_new;
+			TaskSpacePrimitive primitive = primitives_list[i];
 
-			motion_primitives_->applyPrimitive(i, parent_state_variables[0], parent_state_variables[1], parent_state_variables[2], 
-				x_new, y_new, theta_new);
+			int x_disc_new, y_disc_new, theta_disc_new;
+			double x_cont_new, y_cont_new, theta_cont_new;
+
+			x_disc_new = x_disc + primitive.prim_disc_end_pose[0];
+			y_disc_new = y_disc + primitive.prim_disc_end_pose[1];
+			theta_disc_new = ((primitive.prim_disc_end_pose[2] + motion_primitives_parser_->num_of_angles_) % motion_primitives_parser_->num_of_angles_) ;
+
+			if(theta_disc_new < 0)
+			{
+				std::cout << "Error here. theta_disc_new: " << theta_disc_new << std::endl;
+				throw 0;
+			}
+
+			std::vector<double> cont_end_pose = primitive.prim_intermediate_poses.back();
+			x_cont_new = state_variables[0] + cont_end_pose[0];
+			y_cont_new = state_variables[1] + cont_end_pose[1];
+			theta_cont_new = cont_end_pose[2];
 
 			
 			GraphState successor_state;
-			successor_state.setPrimitiveId(i);
+			successor_state.setPrimitiveId(primitive.prim_id);
 			successor_state.setStateType(GraphState::SINGLE_POINT);
-			successor_state.setStateVariables(x_new, y_new, theta_new);
+			successor_state.setStateVariables(x_cont_new, y_cont_new, theta_cont_new);
+			successor_state.setStateVariablesDiscrete(x_disc_new, y_disc_new, theta_disc_new);
 
-			int x_disc, y_disc, theta_disc;
-			// std::cout << "x_disc: " << x_disc << "y_disc: " << y_disc << "theta_disc: " << theta_disc << std::endl;
-			getDiscretePose(x_new, y_new, theta_new, x_disc, y_disc, theta_disc);
-			// std::cout << "x_disc: " << x_disc << "y_disc: " << y_disc << "theta_disc: " << theta_disc << std::endl;			
-			successor_state.setStateVariablesDiscrete(x_disc, y_disc, theta_disc);
+			//For interpolation purposes once path is obtained.
+			// successor_state.prim_intermediate_poses_ = primitive.prim_intermediate_poses;
+
 
 			successor_states.push_back(successor_state);
-
+			
+			
 		}
+
 
 
 		// successor_states.push_back(successor1);
@@ -584,6 +652,65 @@ namespace ak_planner
 	}
 
 
+	void WeightedAStarPlanner::getInterpolatedSolutionPath(std::vector<std::vector<double> >& interpolated_path)
+	{
+
+		std::cout << "Interpolating Solution Path. Solution path size: " << solution_path_.size() << std::endl;
+
+
+		for(int i=0 ; i<solution_path_.size()-1 ; i++)
+		{
+			std::cout << "Solution path node number: " << i << std::endl;
+
+			GraphState pred_state = solution_path_[i];
+			GraphState succ_state = solution_path_[i+1];
+
+			int dummy_x, dummy_y, predecessor_angle_id;
+			pred_state.getStateVariablesDiscrete(dummy_x, dummy_y, predecessor_angle_id);
+			int successor_prim_id = succ_state.getPrimitiveId();
+			
+			std::vector<std::vector<double> > interm_poses = motion_primitives_parser_->getPrimitiveIntermediatePoses(predecessor_angle_id, successor_prim_id);
+			
+			//Debugging
+			// std::cout << "Here 1" << std::endl;
+			// for(int k=0 ; k<interm_poses.size() ; k++)
+			// {
+			// 	std::vector<double> pose = interm_poses[k];
+			// 	std::cout << pose[0] << " " << pose[1] << " " << pose[2] << std::endl;
+			// }
+			// char c;
+			// std::cin >> c;
+			// std::cout << "Here 2" << std::endl;
+			//
+
+			std::vector<double> predecessor_state_variables = pred_state.getStateVariables();
+	
+			for(int j=0 ; j<interm_poses.size()-1 ; j++)
+			{
+				std::vector<double> interpolated_pose;
+				interpolated_pose.resize(3);
+
+				std::vector<double> interm_pose = interm_poses[j];
+
+				interpolated_pose[0] = predecessor_state_variables[0] + interm_pose[0];
+				interpolated_pose[1] = predecessor_state_variables[1] + interm_pose[1];
+				interpolated_pose[2] = interm_pose[2];
+
+				interpolated_path.push_back(interpolated_pose);
+			}
+
+		}
+
+		GraphState path_last_state = solution_path_.back();
+		std::vector<double> last_state_variables = path_last_state.getStateVariables();
+
+		interpolated_path.push_back(last_state_variables);
+
+		std::cout << "Path interpolation done. Interpolated path size: " << interpolated_path.size() << std::endl;
+
+	}
+
+
 	bool WeightedAStarPlanner::plan(const double start_state_x, const double start_state_y, const double start_state_theta, 
 			const double goal_state_x, const double goal_state_y, const double goal_state_theta, bool verbosity)
 	{
@@ -596,6 +723,7 @@ namespace ak_planner
 		{
 			std::cout << "open_queue_.size(): " << open_queue_.size() << std::endl;
 		}
+
 
 		while( !(is_goal_state_expanded_) && !(open_queue_.size()==0) )
 		{

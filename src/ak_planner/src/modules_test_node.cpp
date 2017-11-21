@@ -30,6 +30,20 @@
 #include <ak_simulation/rover_simulator.h>
 
 
+#include <ros/package.h>
+#include <stdlib.h>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/regex.hpp>
+
+
+#include <ak_planner/motion_primitives_parser.h>
+
+
 using namespace ak_planner;
 
 
@@ -130,13 +144,45 @@ int main (int argc, char** argv)
 	sleep_time.sleep();
 
 
+	//------------------------------------------ Testing File Parser ---------------------------------------------------
+
+	// std::cout << "Begining testing File parser" << std::endl;
+
+
+
+	// MotionPrimitivesParser motion_primitive_parser;
+
+	// motion_primitive_parser.readPrimitives();
+
+	// std::vector<TaskSpacePrimitive> primitives_list_0 = motion_primitive_parser.getPrimitiveListFromStartAngleID(15);
+
+	// for(int i=0 ; i<primitives_list_0.size() ; i++)
+	// {
+	// 	primitives_list_0[i].printPrimitive();
+	// 	std::cout << std::endl;
+	// }
+	// std::cout << "Primitive List 0 size: " << primitives_list_0.size() << std::endl;
+
+	// // for(double i=0 ; i<6.28318 ; i+=0.1)
+	// // {
+
+	// // 	std::cout << "Discretizing angle: " << i << "\t Discretized: " << motion_primitive_parser.discretizeAngle(i) << std::endl;
+
+	// // }
+	// // motion_primitive_parser.printPrimitives();
+
+
+	// std::cout << "Ending testing File parser" << std::endl << std::endl;
+
+	// return 0;
+
 	//------------------------------------------ Testing Planner -------------------------------------------------------
 
 	double oc_size_x = 10.0;
 	double oc_size_y = 10.0; 
 	double oc_origin_x = -1.0;
 	double oc_origin_y = -1.0;
-	double oc_resolution = 0.1;
+	double oc_resolution = 0.025;
 
 	double bfs_goal_region_radius = 0.1; 
 	double bfs_weight_multiplier = 1; 
@@ -147,25 +193,25 @@ int main (int argc, char** argv)
 	std::vector<std::vector<double> > object_primitive_coords_3d;
 	std::vector<double> obstacle1;
 	obstacle1.resize(6);
-	obstacle1[0] = 3; //1
-	obstacle1[1] = 3; //1
-	obstacle1[2] = 0.5;
-	obstacle1[3] = 0.5;
-	obstacle1[4] = 0.5;
-	obstacle1[5] = 1;
+	obstacle1[0] = 3; //1  //origin x
+	obstacle1[1] = 2; //1  //origin y
+	obstacle1[2] = 0.5;    //origin z
+	obstacle1[3] = 1.5;    //size x
+	obstacle1[4] = 1.5;    //size y
+	obstacle1[5] = 1;      //size z
 	object_primitive_coords_3d.push_back(obstacle1);
 	 
 	double heuristic_weight_multiplier = 10;
 
 	double start_state_x = 0.0;
-	double start_state_y = 3.0;
+	double start_state_y = 2.0;
 	double start_state_theta = (0.0 * (M_PI/180.0));
 
-	double goal_state_x = 5.7;
-	double goal_state_y = 3.0;
-	double goal_state_theta = (-90.0 * (M_PI/180.0));
+	double goal_state_x = 6;
+	double goal_state_y = 2.0;
+	double goal_state_theta = (0.0 * (M_PI/180.0)); //TODO: Cater for entering negative angles.
 
-	bool verbosity = false;
+	bool verbosity = true;
 
 	WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
 		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_3d, 
@@ -184,7 +230,25 @@ int main (int argc, char** argv)
 
 	//Interpolating Trajectory
 	std::vector<std::vector<double> > interpolated_path_trajectory;
-	interpolateTrajectory(path_trajectory, interpolated_path_trajectory);
+	// interpolated_path_trajectory = path_trajectory;
+	wA_planner.getInterpolatedSolutionPath(interpolated_path_trajectory);
+
+
+	//DEBUGGING INTERPOLATED PATH
+	std::cout << "interpolated_path_trajectory size: " << interpolated_path_trajectory.size() << std::endl;
+	// for(int i=0 ; i<interpolated_path_trajectory.size() ; i++)
+	// {	
+	// 	std::vector<double> pose = interpolated_path_trajectory[i];
+
+	// 	std::cout << pose[0] << "\t" << pose[1] << "\t" << pose[2] << std::endl;
+
+	// 	if( (i % 50) == 0)
+	// 	{
+	// 		char c;
+	// 		std::cin >> c;
+	// 	}
+	// }
+
 
 
 

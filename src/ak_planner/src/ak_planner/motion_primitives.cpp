@@ -32,7 +32,7 @@ namespace ak_planner
 
 		Primitive primitive_1;
 		primitive_1.prim_id = 1;
-		primitive_1.delta_x = -0.3; //0.5
+		primitive_1.delta_x = -0.3; //-0.5
 		primitive_1.delta_y	=  0.0;
 		primitive_1.delta_theta =  0.0 * (M_PI/180.0); 
 

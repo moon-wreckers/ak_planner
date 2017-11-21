@@ -164,6 +164,9 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 add_executable(modules_test_node src/modules_test_node.cpp)
 target_link_libraries(modules_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
+add_executable(simulation_test_node src/simulation_test_node.cpp)
+target_link_libraries(simulation_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

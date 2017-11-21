@@ -143,6 +143,7 @@ set(ak_planner_files
 	src/ak_planner/dubins_distance.cpp
 	src/ak_planner/weighted_A_star_planner.cpp
 	src/ak_planner/motion_primitives.cpp
+	src/ak_planner/motion_primitives_parser.cpp
 
 	src/ak_simulation/rviz_environment_objects.cpp
 	src/ak_simulation/rover_simulator.cpp

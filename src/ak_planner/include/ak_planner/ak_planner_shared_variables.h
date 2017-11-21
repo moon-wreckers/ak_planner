@@ -38,12 +38,12 @@ namespace ak_planner_shared_variables
 	const double bfs2d_goal_region_radius = 0.3;
 
 
-	const double rover_min_turning_radius = 0.5;
-	const double dubins_path_resolution = 0.05;
+	const double rover_min_turning_radius = 0.3;
+	const double dubins_path_resolution = 0.025;
 
 	const double goal_region_x_threshold = 0.2;
 	const double goal_region_y_threshold = 0.2;
-	const double goal_region_theta_threshold = ((double) M_PI/180 * 7);
+	const double goal_region_theta_threshold = ((double) M_PI/180 * 15);
 
 
 	const int NUM_OF_DIRECTIONS = 36;

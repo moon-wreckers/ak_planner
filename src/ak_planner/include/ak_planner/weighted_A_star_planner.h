@@ -22,6 +22,8 @@
 #include <ak_planner/occupancy_grid_2d.h>
 #include <ak_planner/motion_primitives.h>
 
+#include <ak_planner/motion_primitives_parser.h>
+
 
 
 namespace ak_planner
@@ -48,7 +50,10 @@ namespace ak_planner
 		BFS2DHeuristicPtr bfs_2d_heuristic_;
 		DubinsHeuristicPtr dubins_heuristic_;
 		GraphStateManagerPtr graph_state_manager_;
-		MotionPrimitivesPtr motion_primitives_;
+		
+		MotionPrimitivesPtr motion_primitives_; 	// InshaAllah will be removed. Will replace this by motion_primitives_parser_ below.
+		
+		MotionPrimitivesParserPtr motion_primitives_parser_;
 
 		bool verbosity_;
 
@@ -99,6 +104,8 @@ namespace ak_planner
 		void expandGraphState(GraphState current_graph_state);
 
 		void getSolutionPath();
+
+		void getInterpolatedSolutionPath(std::vector<std::vector<double> >& interpolated_path);
 
 		void printSolutionPathStates();
 
