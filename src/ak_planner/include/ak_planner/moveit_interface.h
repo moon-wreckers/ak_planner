@@ -46,6 +46,10 @@ namespace ak_planner
 		ros::Publisher planning_scene_publisher_;
 		ros::Publisher robot_state_publisher_;
 
+		ros::Publisher start_state_publisher_;
+		ros::Publisher goal_state_publisher_;
+		
+
 		int env_object_count_;
 
 	public:
@@ -59,6 +63,9 @@ namespace ak_planner
 		void printRobotCurrentVirtualJointState();
 		void displayRobotState();
 		void pause();
+
+		void displayRobotStartState(double x, double y, double theta);
+		void displayRobotGoalState(double x, double y, double theta);
 
 
 	};

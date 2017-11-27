@@ -188,7 +188,7 @@ int main (int argc, char** argv)
 	double bfs_weight_multiplier = 1; 
 	double bfs_obstacle_inflation = 0.6; 
 
-	double d_weight_multiplier = 1;
+	double d_weight_multiplier = 2;
 	
 	std::vector<std::vector<double> > object_primitive_coords_3d;
 	std::vector<double> obstacle1;
@@ -209,13 +209,16 @@ int main (int argc, char** argv)
 
 	double goal_state_x = 6;
 	double goal_state_y = 2.0;
-	double goal_state_theta = (0.0 * (M_PI/180.0)); //TODO: Cater for entering negative angles.
+	double goal_state_theta = (30.0 * (M_PI/180.0)); //TODO: Cater for entering negative angles.
 
 	bool verbosity = true;
 
 	WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
 		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_3d, 
 		heuristic_weight_multiplier);
+
+	//Simulator
+	rover_simulation::RoverSimulator rover_simulator;
 
 
 	wA_planner.plan(start_state_x, start_state_y, start_state_theta, goal_state_x, goal_state_y, goal_state_theta, verbosity);
@@ -280,8 +283,6 @@ int main (int argc, char** argv)
 
 
 	// Simulation:
-
-	rover_simulation::RoverSimulator rover_simulator;
 	
 	ros::Publisher trajectory_publisher = nh.advertise<geometry_msgs::PoseArray>("/planned_trajectory_topic", 100);
 	trajectory_publisher.publish(path_trajectory_pose_array);

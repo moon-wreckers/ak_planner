@@ -26,4 +26,6 @@
 	<!-- AK Simulation -->
 	<node name="rviz_rover_sim" pkg="rviz" type="rviz" />
 
+  	<include file="$(find ak_planner)/launch/hector_trajectory_odomcombined_baselink.launch" />
+
 </launch>

@@ -23,6 +23,8 @@ namespace ak_planner
 		}
 
 		robot_state_publisher_ = node_handle_.advertise<moveit_msgs::DisplayRobotState>("/robot_states", 5);
+		start_state_publisher_ = node_handle_.advertise<moveit_msgs::DisplayRobotState>("/robot_start_state", 5);
+		goal_state_publisher_ = node_handle_.advertise<moveit_msgs::DisplayRobotState>("/robot_goal_state", 5);
 
 		robot_model_loader_.reset(new robot_model_loader::RobotModelLoader("robot_description"));
 		
@@ -190,6 +192,38 @@ namespace ak_planner
 
 			loop_rate.sleep();
 		}
+	}
+
+	void MoveitInterface::displayRobotStartState(double x, double y, double theta)
+	{
+		setRobotVirtualJoint(x, y, theta);
+		
+		robot_state::RobotState robot_state = planning_scene_->getCurrentStateNonConst();
+		moveit_msgs::DisplayRobotState robot_state_msg;
+		robot_state::robotStateToRobotStateMsg(robot_state, robot_state_msg.state);
+		
+		while(start_state_publisher_.getNumSubscribers() < 1)
+		{
+			ROS_WARN_ONCE("Waiting for subscribers for /robot_start_state topic.");
+		}
+
+		start_state_publisher_.publish(robot_state_msg);
+	}
+
+	void MoveitInterface::displayRobotGoalState(double x, double y, double theta)
+	{
+		setRobotVirtualJoint(x, y, theta);
+		
+		robot_state::RobotState robot_state = planning_scene_->getCurrentStateNonConst();
+		moveit_msgs::DisplayRobotState robot_state_msg;
+		robot_state::robotStateToRobotStateMsg(robot_state, robot_state_msg.state);
+		
+		while(goal_state_publisher_.getNumSubscribers() < 1)
+		{
+			ROS_WARN_ONCE("Waiting for subscribers for /robot_goal_state topic.");
+		}
+
+		goal_state_publisher_.publish(robot_state_msg);
 	}
 
 	void MoveitInterface::pause()

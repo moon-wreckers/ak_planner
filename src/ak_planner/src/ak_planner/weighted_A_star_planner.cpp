@@ -209,6 +209,10 @@ namespace ak_planner
 		goal_state.setStateVariablesDiscrete(goal_state_x_dis, goal_state_y_dis, goal_state_theta_dis);
 		
 
+		moveit_interface_->displayRobotStartState(start_state_x, start_state_y, start_state_theta);
+		moveit_interface_->displayRobotGoalState(goal_state_x, goal_state_y, goal_state_theta);
+		
+
 		graph_state_manager_->addStartState(start_state);
 		graph_state_manager_->addGoalState(goal_state);
 

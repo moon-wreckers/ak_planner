@@ -46,7 +46,10 @@
 		base_rear_lw_tf_.transform.translation.x = -0.3;
 		base_rear_lw_tf_.transform.translation.y = 0.35;
 		base_rear_lw_tf_.transform.translation.z = 0.05;
-		base_rear_lw_tf_.transform.rotation = tf::createQuaternionMsgFromYaw(0);		
+		base_rear_lw_tf_.transform.rotation = tf::createQuaternionMsgFromYaw(0);
+
+		
+		environment_obstacles_.publishObstacles();		
 	}
 
 	void RoverSimulator::plannedTrajectoryCallBack(const geometry_msgs::PoseArray& trajectory)
@@ -102,7 +105,7 @@
 
 	void RoverSimulator::runSimulation()
 	{
-		environment_obstacles_.publishObstacles();
+		// environment_obstacles_.publishObstacles();
 		publishTrajectory();
 	}
 
