@@ -83,7 +83,7 @@
 			sleep(1);
 		}
 
-		std::cout << "object_vector_.size() : " << object_vector_.size() << std::endl;
+		// std::cout << "object_vector_.size() : " << object_vector_.size() << std::endl;
 
 		for(int i = 0 ; i < object_vector_.size() ; i++)
  		{

@@ -174,13 +174,13 @@ int main (int argc, char** argv)
 
 	if(environment_type == "fve")
 	{
+		rover_simulation::RoverSimulator rover_simulator;
+
 		WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
 		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_3d, 
 		heuristic_weight_multiplier);
 		
 		wA_planner.plan(start_state_x, start_state_y, start_state_theta, goal_state_x, goal_state_y, goal_state_theta, verbosity);
-
-		rover_simulation::RoverSimulator rover_simulator;
 
 		std::vector<std::vector<double> > path_trajectory;
 		generateTrajectoryPointsFromPath(wA_planner.solution_path_, path_trajectory);
@@ -233,13 +233,13 @@ int main (int argc, char** argv)
 	}
 	else if(environment_type == "maze")
 	{
+		rover_simulation::RoverSimulator rover_simulator;
+		
 		WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
 		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_maze_3d, 
 		heuristic_weight_multiplier);
 
 		wA_planner.plan(start_state_maze_x, start_state_maze_y, start_state_maze_theta, goal_state_maze_x, goal_state_maze_y, goal_state_maze_theta, verbosity);
-
-		rover_simulation::RoverSimulator rover_simulator;
 
 		std::vector<std::vector<double> > path_trajectory;
 		generateTrajectoryPointsFromPath(wA_planner.solution_path_, path_trajectory);
