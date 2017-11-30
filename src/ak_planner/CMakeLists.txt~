@@ -143,6 +143,7 @@ set(ak_planner_files
 	src/ak_planner/dubins_distance.cpp
 	src/ak_planner/weighted_A_star_planner.cpp
 	src/ak_planner/motion_primitives.cpp
+	src/ak_planner/motion_primitives_parser.cpp
 
 	src/ak_simulation/rviz_environment_objects.cpp
 	src/ak_simulation/rover_simulator.cpp
@@ -166,6 +167,9 @@ target_link_libraries(modules_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(simulation_test_node src/simulation_test_node.cpp)
 target_link_libraries(simulation_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+add_executable(planning_node src/planning_node.cpp)
+target_link_libraries(modules_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

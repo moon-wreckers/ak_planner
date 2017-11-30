@@ -13,7 +13,7 @@
 
  	RvizEnvironmentObjects::RvizEnvironmentObjects() : node_handle_("~")
  	{
- 		marker_pub_ = node_handle_.advertise<visualization_msgs::Marker>("/visualization_marker", 1);
+ 		marker_pub_ = node_handle_.advertise<visualization_msgs::Marker>("/visualization_marker", 10);
  		marker_id_ = 0;
 
  		getObstacles();
@@ -56,6 +56,11 @@
 
  	void RvizEnvironmentObjects::getObstacles()
  	{
+ 		// ENVIRONMENT_OBSTACLES.setupVisualizationEnvironment();
+
+ 		EnvironmentObstacles ENVIRONMENT_OBSTACLES;
+ 		ENVIRONMENT_OBSTACLES.setupVisualizationEnvironment();
+
  		for(int i = 0 ; i < ENVIRONMENT_OBSTACLES.obstacles.size() ; i++)
  		{
  			visualization_msgs::Marker marker;
@@ -77,6 +82,8 @@
 			ROS_WARN_ONCE("Please create a subscriber to the marker.");
 			sleep(1);
 		}
+
+		std::cout << "object_vector_.size() : " << object_vector_.size() << std::endl;
 
 		for(int i = 0 ; i < object_vector_.size() ; i++)
  		{

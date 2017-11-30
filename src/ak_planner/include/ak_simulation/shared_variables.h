@@ -25,8 +25,55 @@ namespace rover_simulation
 		EnvironmentObstacles()
 		{
 
-			addObstacle(3.0, 2.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
-			// addObstacle(2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5);
+			// std::string environment_type;
+			// std::cout << "Enter visualization environment. FVE-Doc environment (fve) or Maze environment (maze): ";
+			// std::cin >> environment_type;
+			// std::cout << std::endl;
+
+			// if(environment_type == "fve")
+			// {
+			// 	addObstacle(3.0, 3.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
+			// }
+			// else if(environment_type == "maze")
+			// {
+			// 	//Maze Obstacles:
+			// 	addObstacle(6.0, 4.0, 0.5,  0.0, 0.0, 0.0,  1.0, 6.0, 1);
+			// 	addObstacle(3.0, 7.5, 0.5,  0.0, 0.0, 0.0,  7.0, 1.0, 1);
+			// 	addObstacle(0.0, 3.5, 0.5,  0.0, 0.0, 0.0,  1.0, 7.0, 1);
+			// 	addObstacle(3.0, 2.0, 0.5,  0.0, 0.0, 0.0,  1.0, 5.0, 1);
+			// }
+			// else
+			// {
+			// 	std::cout << "Invalid environment specified for visualization. Setting fve environment." << std::endl;
+			// 	addObstacle(3.0, 3.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
+			// }		
+
+		}
+
+		void setupVisualizationEnvironment()
+		{
+			std::string environment_type;
+			std::cout << "Enter visualization environment. FVE-Doc environment (fve) or Maze environment (maze): ";
+			std::cin >> environment_type;
+			std::cout << std::endl;
+
+			if(environment_type == "fve")
+			{
+				addObstacle(3.0, 2.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
+			}
+			else if(environment_type == "maze")
+			{
+				//Maze Obstacles:
+				addObstacle(6.0, 4.0, 0.5,  0.0, 0.0, 0.0,  1.0, 6.0, 1);
+				addObstacle(3.0, 7.5, 0.5,  0.0, 0.0, 0.0,  7.0, 1.0, 1);
+				addObstacle(0.0, 3.5, 0.5,  0.0, 0.0, 0.0,  1.0, 7.0, 1);
+				addObstacle(3.0, 2.0, 0.5,  0.0, 0.0, 0.0,  1.0, 5.0, 1);
+			}
+			else
+			{
+				std::cout << "Invalid environment specified for visualization. Setting fve environment." << std::endl;
+				addObstacle(3.0, 3.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
+			}
 		}
 
 
@@ -48,7 +95,7 @@ namespace rover_simulation
 			obstacles.push_back(obstacle);
 		}
 
-	} const ENVIRONMENT_OBSTACLES; 
+	} ; //const ENVIRONMENT_OBSTACLES; 
 
 
 

@@ -48,7 +48,6 @@
 		base_rear_lw_tf_.transform.translation.z = 0.05;
 		base_rear_lw_tf_.transform.rotation = tf::createQuaternionMsgFromYaw(0);
 
-		
 		environment_obstacles_.publishObstacles();		
 	}
 

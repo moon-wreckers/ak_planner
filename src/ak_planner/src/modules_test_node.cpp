@@ -185,10 +185,10 @@ int main (int argc, char** argv)
 	double oc_resolution = 0.025;
 
 	double bfs_goal_region_radius = 0.1; 
-	double bfs_weight_multiplier = 1; 
+	double bfs_weight_multiplier = 2.0; 
 	double bfs_obstacle_inflation = 0.6; 
 
-	double d_weight_multiplier = 2;
+	double d_weight_multiplier = 2.0;
 	
 	std::vector<std::vector<double> > object_primitive_coords_3d;
 	std::vector<double> obstacle1;
@@ -200,28 +200,118 @@ int main (int argc, char** argv)
 	obstacle1[4] = 1.5;    //size y
 	obstacle1[5] = 1;      //size z
 	object_primitive_coords_3d.push_back(obstacle1);
-	 
+	
+	std::vector<double> obstacle2;
+	obstacle2.resize(6);
+	obstacle2[0] = 3; //1  //origin x
+	obstacle2[1] = 5.5; //1  //origin y
+	obstacle2[2] = 0.5;    //origin z
+	obstacle2[3] = 1.5;    //size x
+	obstacle2[4] = 1.5;    //size y
+	obstacle2[5] = 1;      //size z
+	object_primitive_coords_3d.push_back(obstacle2);
+
+
+	// Maze Obstacles:-----------------------------------------------------------
+	std::vector<std::vector<double> > object_primitive_coords_maze_3d;
+	
+	std::vector<double> obstacle_maze1;
+	obstacle_maze1.resize(6);
+	obstacle_maze1[0] = 6.0;      //origin x
+	obstacle_maze1[1] = 4.0; 	    //origin y
+	obstacle_maze1[2] = 0.5;    //origin z
+	obstacle_maze1[3] = 1.0;    //size x
+	obstacle_maze1[4] = 6.0;    //size y
+	obstacle_maze1[5] = 1;      //size z
+	object_primitive_coords_maze_3d.push_back(obstacle_maze1);
+
+	std::vector<double> obstacle_maze2;
+	obstacle_maze2.resize(6);
+	obstacle_maze2[0] = 3.0;      //origin x
+	obstacle_maze2[1] = 7.5; 	    //origin y
+	obstacle_maze2[2] = 0.5;    //origin z
+	obstacle_maze2[3] = 7.0;    //size x
+	obstacle_maze2[4] = 1.0;    //size y
+	obstacle_maze2[5] = 1;      //size z
+	object_primitive_coords_maze_3d.push_back(obstacle_maze2);
+
+	std::vector<double> obstacle_maze3;
+	obstacle_maze3.resize(6);
+	obstacle_maze3[0] = 0.0;      //origin x
+	obstacle_maze3[1] = 3.5; 	    //origin y
+	obstacle_maze3[2] = 0.5;    //origin z
+	obstacle_maze3[3] = 1.0;    //size x
+	obstacle_maze3[4] = 7.0;    //size y
+	obstacle_maze3[5] = 1;      //size z
+	object_primitive_coords_maze_3d.push_back(obstacle_maze3);
+
+	std::vector<double> obstacle_maze4;
+	obstacle_maze4.resize(6);
+	obstacle_maze4[0] = 3.0;      //origin x
+	obstacle_maze4[1] = 2.0; 	    //origin y
+	obstacle_maze4[2] = 0.5;    //origin z
+	obstacle_maze4[3] = 1.0;    //size x
+	obstacle_maze4[4] = 5.0;    //size y
+	obstacle_maze4[5] = 1;      //size z
+	object_primitive_coords_maze_3d.push_back(obstacle_maze4);
+
+	//-----------------------------------------------------------------------------
+	
+
+
+
 	double heuristic_weight_multiplier = 10;
 
-	double start_state_x = 0.0;
-	double start_state_y = 2.0;
-	double start_state_theta = (0.0 * (M_PI/180.0));
+	/* Working Start, Goal states
+	 *		
+	 *	double start_state_x = 0.0; //0.0
+	 *	double start_state_y = 2.0;	//2.0
+	 *	double start_state_theta = (0.0 * (M_PI/180.0));
+	 *	
+	 *	double goal_state_x = 6;
+	 *	double goal_state_y = 2.0;
+	 *	double goal_state_theta = (30.0 * (M_PI/180.0)); //TODO: Cater for entering negative angles.
+	 *
+	 */
 
-	double goal_state_x = 6;
-	double goal_state_y = 2.0;
-	double goal_state_theta = (30.0 * (M_PI/180.0)); //TODO: Cater for entering negative angles.
+	double start_state_x = 0.0; //0.0
+	double start_state_y = 0.0;	//2.0
+	double start_state_theta = (45.0 * (M_PI/180.0)); //0.0
 
-	bool verbosity = true;
+	double goal_state_x = 6; //6.0
+	double goal_state_y = 7.0; //2.0
+	double goal_state_theta = (90.0 * (M_PI/180.0)); //30.0 //TODO: Cater for entering negative angles.
+
+
+	//Start & Goal State for maze:----------------------------------------------------------------------------------
+	double start_state_maze_x = 1.5; //0.0
+	double start_state_maze_y = 0.0;	//2.0
+	double start_state_maze_theta = (90.0 * (M_PI/180.0)); //0.0
+
+	double goal_state_maze_x = 7.5; //6.0
+	double goal_state_maze_y = 7.0; //2.0
+	double goal_state_maze_theta = (90.0 * (M_PI/180.0)); //30.0 
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	bool verbosity = false;
+
+	// WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
+	// 	bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_3d, 
+	// 	heuristic_weight_multiplier);
 
 	WeightedAStarPlanner wA_planner(oc_size_x, oc_size_y, oc_origin_x, oc_origin_y, oc_resolution, 
-		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_3d, 
+		bfs_goal_region_radius, bfs_weight_multiplier, bfs_obstacle_inflation, d_weight_multiplier, object_primitive_coords_maze_3d, 
 		heuristic_weight_multiplier);
+
 
 	//Simulator
 	rover_simulation::RoverSimulator rover_simulator;
 
 
-	wA_planner.plan(start_state_x, start_state_y, start_state_theta, goal_state_x, goal_state_y, goal_state_theta, verbosity);
+	// wA_planner.plan(start_state_x, start_state_y, start_state_theta, goal_state_x, goal_state_y, goal_state_theta, verbosity);
+
+	wA_planner.plan(start_state_maze_x, start_state_maze_y, start_state_maze_theta, goal_state_maze_x, goal_state_maze_y, goal_state_maze_theta, verbosity);
 
 	// wA_planner.printSolutionPathStates();
 
