@@ -18,6 +18,8 @@
 #include <ak_simulation/shared_variables.h>
 #include <ak_simulation/rviz_environment_objects.h>
 
+#include <visualization_msgs/Marker.h>
+
 
 namespace rover_simulation
 {
@@ -41,7 +43,9 @@ namespace rover_simulation
 		RvizEnvironmentObjects environment_obstacles_;
 
 		bool is_trajectory_set_;
-		
+
+
+		ros::Publisher text_marker_pub_;
 
 		void setRoverPose(const geometry_msgs::Pose& rover_pose);
 
@@ -55,6 +59,9 @@ namespace rover_simulation
 		void runSimulation();
 
 		inline bool isTrajectoryRecieved() const;
+
+		void displayErrorText(double x_err, double y_err, double theta_err, double pos_x, double pos_y);
+	
 
 	};
 

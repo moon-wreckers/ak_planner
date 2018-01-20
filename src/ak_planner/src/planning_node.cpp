@@ -153,6 +153,28 @@ int main (int argc, char** argv)
 	double goal_state_maze_theta = (90.0 * (M_PI/180.0));  
 	//--------------------------------------------------------------------------------------------------------------
 
+	double goal_pose_x;
+	double goal_pose_y;
+	double goal_pose_theta;
+
+	if(environment_type == "fve")
+	{
+		goal_pose_x = goal_state_x;
+		goal_pose_y = goal_state_y;
+		goal_pose_theta = goal_state_theta;
+	}
+	else if(environment_type == "maze")
+	{
+		goal_pose_x = goal_state_maze_x;
+		goal_pose_y = goal_state_maze_y;
+		goal_pose_theta = goal_state_maze_theta;
+	}
+	else
+	{
+		ROS_ERROR_STREAM("Invalid environment type specified. Cannot set goal_pose_* .");
+		throw std::runtime_error("Invalid environment type specified. Cannot set goal_pose_* .");
+	}
+
 
 	// Parameters For The Planner:-----------------------
 	double oc_size_x = 10.0;
@@ -162,10 +184,10 @@ int main (int argc, char** argv)
 	double oc_resolution = 0.025;
 
 	double bfs_goal_region_radius = 0.1; 
-	double bfs_weight_multiplier = 2.0; 		// For maze: bfs_weight_multiplier = 2.0,   For fve: bfs_weight_multiplier = 1
+	double bfs_weight_multiplier = 1.0; 		// For maze: bfs_weight_multiplier = 2.0,   For fve: bfs_weight_multiplier = 1
 	double bfs_obstacle_inflation = 0.6; 
 
-	double d_weight_multiplier = 2.0;
+	double d_weight_multiplier = 1.0;
 
 	double heuristic_weight_multiplier = 10;
 
@@ -209,6 +231,16 @@ int main (int argc, char** argv)
 		trajectory_publisher.publish(path_trajectory_pose_array);
 
 
+		// Error calculation between trajectory final pose and goal pose. 
+		std::vector<double> final_pose = interpolated_path_trajectory.back();
+		double error_x = goal_pose_x - final_pose[0];
+		double error_y = goal_pose_y - final_pose[1];
+		double error_theta = (goal_pose_theta - final_pose[2]) * 180.0 / 3.142;
+		std::cout << "Error x: " << error_x << "\t\tError y: " << error_y << "\t\tError theta: " << error_theta << std::endl;
+
+		GraphState final_state = wA_planner.expanded_goal_state_;
+		final_state.printStateAttributes();
+
 		while(ros::ok())
 		{
 			char command;
@@ -220,6 +252,8 @@ int main (int argc, char** argv)
 				// trajectory_publisher.publish(trajectory1);
 				ros::spinOnce();
 				rover_simulator.runSimulation();
+
+				rover_simulator.displayErrorText(error_x, error_y, error_theta, goal_pose_x, goal_pose_y);
 				//rover_simulator.publishTrajectory();
 			} 
 			else
@@ -267,6 +301,16 @@ int main (int argc, char** argv)
 		ros::Publisher trajectory_publisher = nh.advertise<geometry_msgs::PoseArray>("/planned_trajectory_topic", 100);
 		trajectory_publisher.publish(path_trajectory_pose_array);
 
+		// Error calculation between trajectory final pose and goal pose. 
+		std::vector<double> final_pose = interpolated_path_trajectory.back();
+		double error_x = goal_pose_x - final_pose[0];
+		double error_y = goal_pose_y - final_pose[1];
+		double error_theta = (goal_pose_theta - final_pose[2]) * 180.0 / 3.142;
+		std::cout << "Error x: " << error_x << "\t\tError y: " << error_y << "\t\tError theta: " << error_theta << std::endl;
+
+		GraphState final_state = wA_planner.expanded_goal_state_;
+		final_state.printStateAttributes();
+
 
 		while(ros::ok())
 		{
@@ -279,6 +323,8 @@ int main (int argc, char** argv)
 				// trajectory_publisher.publish(trajectory1);
 				ros::spinOnce();
 				rover_simulator.runSimulation();
+
+				rover_simulator.displayErrorText(error_x, error_y, error_theta, goal_pose_x, goal_pose_y);
 				//rover_simulator.publishTrajectory();
 			} 
 			else
