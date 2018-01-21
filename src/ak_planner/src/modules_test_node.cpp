@@ -146,35 +146,35 @@ int main (int argc, char** argv)
 
 	//------------------------------------------ Testing File Parser ---------------------------------------------------
 
-	// std::cout << "Begining testing File parser" << std::endl;
+	std::cout << "Begining testing File parser" << std::endl;
 
 
 
-	// MotionPrimitivesParser motion_primitive_parser;
+	MotionPrimitivesParser motion_primitive_parser;
 
-	// motion_primitive_parser.readPrimitives();
+	motion_primitive_parser.readPrimitives();
 
-	// std::vector<TaskSpacePrimitive> primitives_list_0 = motion_primitive_parser.getPrimitiveListFromStartAngleID(15);
+	std::vector<TaskSpacePrimitive> primitives_list_0 = motion_primitive_parser.getPrimitiveListFromStartAngleID(15);
 
-	// for(int i=0 ; i<primitives_list_0.size() ; i++)
+	for(int i=0 ; i<primitives_list_0.size() ; i++)
+	{
+		primitives_list_0[i].printPrimitive();
+		std::cout << std::endl;
+	}
+	std::cout << "Primitive List 0 size: " << primitives_list_0.size() << std::endl;
+
+	// for(double i=0 ; i<6.28318 ; i+=0.1)
 	// {
-	// 	primitives_list_0[i].printPrimitive();
-	// 	std::cout << std::endl;
+
+	// 	std::cout << "Discretizing angle: " << i << "\t Discretized: " << motion_primitive_parser.discretizeAngle(i) << std::endl;
+
 	// }
-	// std::cout << "Primitive List 0 size: " << primitives_list_0.size() << std::endl;
-
-	// // for(double i=0 ; i<6.28318 ; i+=0.1)
-	// // {
-
-	// // 	std::cout << "Discretizing angle: " << i << "\t Discretized: " << motion_primitive_parser.discretizeAngle(i) << std::endl;
-
-	// // }
-	// // motion_primitive_parser.printPrimitives();
+	// motion_primitive_parser.printPrimitives();
 
 
-	// std::cout << "Ending testing File parser" << std::endl << std::endl;
+	std::cout << "Ending testing File parser" << std::endl << std::endl;
 
-	// return 0;
+	return 0;
 
 	//------------------------------------------ Testing Planner -------------------------------------------------------
 

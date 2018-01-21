@@ -38,7 +38,7 @@ namespace ak_planner_shared_variables
 	const double bfs2d_goal_region_radius = 0.3;
 
 
-	const double rover_min_turning_radius = 0.99; //0.3
+	const double rover_min_turning_radius = 1.1; //0.99
 	const double dubins_path_resolution = 0.025;
 
 	const double goal_region_x_threshold = 0.1; //0.2

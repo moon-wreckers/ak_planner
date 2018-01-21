@@ -12,18 +12,28 @@
 namespace ak_planner
 {
 
+	// For changing back to old primitives, do the following:
+	// 1) Change the file_path_ for the file name
+	// 2) Change the throw error thing corresponding to old file
+	// 3) Change num_of_prim_per_angle_
+	// 4) Uncomment the primitive.prim_turning_radius portion code
+
 	MotionPrimitivesParser::MotionPrimitivesParser()
 	{
 
 		file_path_ = ros::package::getPath("ak_planner");
-		file_path_ += "/primitives/non_uniform_res0025_rad1_err005.txt";
+		file_path_ += "/primitives/autokrawler_v01.txt";
+		// file_path_ += "/primitives/non_uniform_res0025_rad1_err005.txt";
 	
 		file_stream_.open(file_path_.c_str());
 
 		if(!file_stream_.is_open())
 		{
-			ROS_ERROR_STREAM("ak_planner/primitives/non_uniform_res0025_rad1_err005.txt could not be opened");
-			throw std::runtime_error("ak_planner/primitives/non_uniform_res0025_rad1_err005.txt could not be opened");
+			// ROS_ERROR_STREAM("ak_planner/primitives/non_uniform_res0025_rad1_err005.txt could not be opened");
+			// throw std::runtime_error("ak_planner/primitives/non_uniform_res0025_rad1_err005.txt could not be opened");
+			
+			ROS_ERROR_STREAM("ak_planner/primitives/autokrawler_v01.txt could not be opened");
+			throw std::runtime_error("ak_planner/primitives/autokrawler_v01.txt could not be opened");
 		}
 		else
 		{
@@ -71,16 +81,17 @@ namespace ak_planner
 
 			primitives_loaded_ = false;
 
-			// std::cout << "resolution: " << prim_resolution_ << std::endl;
-			// std::cout << "min_radius: " << prim_min_radius_ << std::endl;
-			// std::cout << "num_of_angles_: " << num_of_angles_ << std::endl;
-			// for(int i=0 ; i < angle_id_value_pair_list_.size() ; i++)
-			// {
-			// 	std::cout << "Angle ID: " << angle_id_value_pair_list_[i].first << "\tValue: " << angle_id_value_pair_list_[i].second << std::endl;
-			// }
-
-
+			std::cout << "resolution: " << prim_resolution_ << std::endl;
+			std::cout << "min_radius: " << prim_min_radius_ << std::endl;
+			std::cout << "num_of_angles_: " << num_of_angles_ << std::endl;
+			for(int i=0 ; i < angle_id_value_pair_list_.size() ; i++)
+			{
+				std::cout << "Angle ID: " << angle_id_value_pair_list_[i].first << "\tValue: " << angle_id_value_pair_list_[i].second << std::endl;
+			}
 		}
+
+		// num_of_prim_per_angle_ = 8;		// For old primitives
+		num_of_prim_per_angle_ = 11;		// For new primitives (autokrawler_v01.txt)
 
 	}
 
@@ -138,10 +149,13 @@ namespace ak_planner
 			boost::algorithm::split_regex(tokens, line, boost::regex(": "));
 			primitive.prim_action_cost_mult = atof(tokens[1].c_str());
 
-			tokens.clear();
-			std::getline(file_stream_, line);
-			boost::algorithm::split_regex(tokens, line, boost::regex(": "));
-			primitive.prim_turning_radius = atof(tokens[1].c_str());
+			
+			// Uncomment below part for old primitive file
+			primitive.prim_turning_radius = 0.0000;
+			// tokens.clear();
+			// std::getline(file_stream_, line);
+			// boost::algorithm::split_regex(tokens, line, boost::regex(": "));
+			// primitive.prim_turning_radius = atof(tokens[1].c_str());
 
 			tokens.clear();
 			std::getline(file_stream_, line);
@@ -217,8 +231,8 @@ namespace ak_planner
 			throw std::runtime_error("Primitives not found in the primitives list for the given start_angle. ");
 		}
 
-		int offset_1 = start_angle * 8;
-		int offset_2 = offset_1 + 8;
+		int offset_1 = start_angle * num_of_prim_per_angle_;
+		int offset_2 = offset_1 + num_of_prim_per_angle_;
 
 		std::vector<TaskSpacePrimitive> primitives_list_required(primitives_list_.begin() + offset_1, primitives_list_.begin() + offset_2);
 		return primitives_list_required;

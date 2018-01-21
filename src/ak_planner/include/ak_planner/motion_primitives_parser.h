@@ -97,6 +97,7 @@ namespace ak_planner
 		int num_of_angles_;
 		std::vector<AngleIDValuePair> angle_id_value_pair_list_;
 		int num_of_prim_;
+		int num_of_prim_per_angle_;
 
 		std::vector<TaskSpacePrimitive> primitives_list_;
 

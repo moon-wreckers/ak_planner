@@ -181,7 +181,8 @@ int main (int argc, char** argv)
 	double oc_size_y = 10.0; 
 	double oc_origin_x = -1.0;
 	double oc_origin_y = -1.0;
-	double oc_resolution = 0.025;
+	// double oc_resolution = 0.025;		// For old primitives 
+	double oc_resolution = 0.1500;
 
 	double bfs_goal_region_radius = 0.1; 
 	double bfs_weight_multiplier = 1.0; 		// For maze: bfs_weight_multiplier = 2.0,   For fve: bfs_weight_multiplier = 1
