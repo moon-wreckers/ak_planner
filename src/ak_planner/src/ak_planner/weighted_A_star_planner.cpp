@@ -530,6 +530,38 @@ namespace ak_planner
 			std::vector<double> state_variables = successor_state.getStateVariables();
 			bool is_collision = moveit_interface_->isStateInCollision(state_variables[0], state_variables[1], state_variables[2]);
 
+
+			//Collision checking for intermediate poses
+			int dummy_x, dummy_y, predecessor_angle_id;
+			current_graph_state.getStateVariablesDiscrete(dummy_x, dummy_y, predecessor_angle_id);
+			
+			int successor_prim_id = successor_state.getPrimitiveId();
+			std::vector<double> predecessor_state_variables = current_graph_state.getStateVariables();
+
+			std::vector<std::vector<double> > interm_poses = motion_primitives_parser_->getPrimitiveIntermediatePoses(predecessor_angle_id, successor_prim_id);
+			for(int j=0 ; j < (int)interm_poses.size() ; j++)
+			{
+
+				std::vector<double> interpolated_pose;
+				interpolated_pose.resize(3);
+
+				std::vector<double> interm_pose = interm_poses[j];
+
+				interpolated_pose[0] = predecessor_state_variables[0] + interm_pose[0];
+				interpolated_pose[1] = predecessor_state_variables[1] + interm_pose[1];
+				interpolated_pose[2] = interm_pose[2];
+
+				bool is_interm_pose_collision = moveit_interface_->isStateInCollision(interpolated_pose[0], interpolated_pose[1], interpolated_pose[2]);
+				
+				if(is_interm_pose_collision)
+				{
+					is_collision = true;
+					break;
+				}
+			}
+			//End collision checking for intermediate poses
+
+
 			if( !is_collision && isInEnvironmentBounds(successor_state) )
 			{
 
