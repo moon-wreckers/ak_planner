@@ -17,6 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   tf
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -61,11 +62,10 @@ find_package(Boost REQUIRED system filesystem date_time thread)
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  PlanPath.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -75,10 +75,11 @@ find_package(Boost REQUIRED system filesystem date_time thread)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -112,7 +113,7 @@ find_package(Boost REQUIRED system filesystem date_time thread)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS moveit_core moveit_ros_planning_interface moveit_ros_planning tf pluginlib
+  CATKIN_DEPENDS moveit_core moveit_ros_planning_interface moveit_ros_planning tf pluginlib message_runtime
 #  DEPENDS system_lib
 )
 
@@ -144,6 +145,7 @@ set(ak_planner_files
 	src/ak_planner/weighted_A_star_planner.cpp
 	src/ak_planner/motion_primitives.cpp
 	src/ak_planner/motion_primitives_parser.cpp
+	src/ak_planner/planner_interface.cpp
 
 	src/ak_simulation/rviz_environment_objects.cpp
 	src/ak_simulation/rover_simulator.cpp
@@ -157,6 +159,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## either from message generation or dynamic reconfigure
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
@@ -169,7 +172,15 @@ add_executable(simulation_test_node src/simulation_test_node.cpp)
 target_link_libraries(simulation_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 
 add_executable(planning_node src/planning_node.cpp)
-target_link_libraries(modules_test_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(planning_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+
+add_executable(planner_server_node src/planner_server_node.cpp)
+target_link_libraries(planner_server_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+add_dependencies(planner_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+add_executable(planner_client_node src/planner_clent_node.cpp)
+target_link_libraries(planner_client_node ${PROJECT_NAME} ${catkin_LIBRARIES})
+add_dependencies(planner_client_node ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

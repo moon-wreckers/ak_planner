@@ -91,6 +91,7 @@ namespace ak_planner
 
 		int x, y;
 		occupancy_grid_2d_->worldToGrid(state_variables[0], state_variables[1], x, y); 
+		std::cout << "x_double, y_double: " << state_variables[0] << ", " << state_variables[1] << std::endl;
 		double heur_val = bfs_->getDistance(x, y); //TODO: remove worldToGrid thing above and just use graph_state's x_coord_ and y_coord_
 		// std::cout << "heur val inside getGoalHeuristic: " << heur_val << std::endl;
 		// std::cout << "heur val after multiplication: " << ((double)heur_val * occupancy_grid_2d_->getResolution()) << std::endl;

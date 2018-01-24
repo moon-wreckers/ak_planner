@@ -1,0 +1,31 @@
+<launch>
+
+	<include file="$(find ak1_moveit_generated)/launch/planning_context.launch">
+		<arg name="load_robot_description" value="true" />
+	</include>
+
+	<include file="$(find ak1_moveit_generated)/launch/move_group.launch" />
+
+
+	<!-- AK Simulation -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	
+
+	
+	<!--include file="$(find ak_planner)/launch/simulation_test_launch.launch">
+	</include-->
+
+	
+	<!--include file="$(find ak1_moveit_generated)/launch/demo.launch" /-->
+
+	<node name="planner_server_node" pkg="ak_planner" type="planner_server_node" respawn="false" output="screen">
+		<rosparam command="load" file="$(find ak1_moveit_generated)/config/kinematics.yaml" />
+	</node>
+
+
+	<!-- AK Simulation -->
+	<node name="rviz_rover_sim" pkg="rviz" type="rviz" />
+
+  	<include file="$(find ak_planner)/launch/hector_trajectory_odomcombined_baselink.launch" />
+
+</launch>

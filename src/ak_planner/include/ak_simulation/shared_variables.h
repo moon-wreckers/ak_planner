@@ -52,10 +52,10 @@ namespace rover_simulation
 
 		void setupVisualizationEnvironment()
 		{
-			std::string environment_type;
-			std::cout << "Enter visualization environment. FVE-Doc environment (fve) or Maze environment (maze): ";
-			std::cin >> environment_type;
-			std::cout << std::endl;
+			std::string environment_type = "fve";
+			// std::cout << "Enter visualization environment. FVE-Doc environment (fve) or Maze environment (maze): ";
+			// std::cin >> environment_type;
+			// std::cout << std::endl;
 
 			if(environment_type == "fve")
 			{
@@ -72,7 +72,7 @@ namespace rover_simulation
 			else
 			{
 				std::cout << "Invalid environment specified for visualization. Setting fve environment." << std::endl;
-				addObstacle(3.0, 3.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
+				addObstacle(3.0, 2.0, 0.5,  0.0, 0.0, 0.0,  1.5, 1.5, 1);
 			}
 		}
 

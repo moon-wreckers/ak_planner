@@ -131,6 +131,8 @@ namespace ak_planner
 
 	bool MoveitInterface::isStateInCollision(double x, double y, double theta)
 	{
+		ros::spinOnce();
+		
 		robot_state::RobotState robot_state = planning_scene_->getCurrentStateNonConst();
 		robot_state.setVariablePosition("virtual_joint/x", x);
 		robot_state.setVariablePosition("virtual_joint/y", y);

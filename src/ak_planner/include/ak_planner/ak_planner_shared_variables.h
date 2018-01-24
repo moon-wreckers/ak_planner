@@ -41,8 +41,8 @@ namespace ak_planner_shared_variables
 	const double rover_min_turning_radius = 1.1; //0.99
 	const double dubins_path_resolution = 0.025;
 
-	const double goal_region_x_threshold = 0.1; //0.2
-	const double goal_region_y_threshold = 0.1; //0.2
+	const double goal_region_x_threshold = 0.1; //0.1
+	const double goal_region_y_threshold = 0.1; //0.1
 	const double goal_region_theta_threshold = ((double) M_PI/180 * 15);
 
 

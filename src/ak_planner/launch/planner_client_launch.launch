@@ -1,0 +1,6 @@
+<launch>
+
+	<node name="planner_client_node" pkg="ak_planner" type="planner_client_node" respawn="false" output="screen">
+	</node>
+
+</launch>

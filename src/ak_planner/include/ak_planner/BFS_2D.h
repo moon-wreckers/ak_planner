@@ -58,6 +58,7 @@ namespace ak_planner
 		if (x < 0 || y < 0 || x >= dim_x - 2 || y >= dim_y - 2) 
         {
             std::cout << "Invalid coordinates given to get Node at (x,y) = (" << x << ", " << y << ")" << std::endl;
+            std::cout << "dim_x: " << dim_x << "dim_x-2: " << dim_x-2 << "dim_y: " << dim_y << "dim_y-2: " << dim_y-2 << std::endl;
             throw std::runtime_error("Invalid coordinates for BFS2D grid");
         }
 

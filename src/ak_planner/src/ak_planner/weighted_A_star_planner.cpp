@@ -486,13 +486,22 @@ namespace ak_planner
 		
 		std::vector<double> state_variables = graph_state.getStateVariables();
 
-		if( (state_variables[0] <= occupancy_grid_2d_->origin_x_) ||  
-			(state_variables[0] >= occupancy_grid_2d_->origin_x_ + occupancy_grid_2d_->size_x_) ||
-			(state_variables[1] <= occupancy_grid_2d_->origin_y_) ||
-			(state_variables[1] >= occupancy_grid_2d_->origin_y_ + occupancy_grid_2d_->size_y_) )
+		int x, y;
+		occupancy_grid_2d_->worldToGrid(state_variables[0], state_variables[1], x, y);
+
+		if(x <=0 || x >= (int)(occupancy_grid_2d_->size_x_/occupancy_grid_2d_->getResolution()) ||
+			y <=0 || y>= (int)(occupancy_grid_2d_->size_y_/occupancy_grid_2d_->getResolution()) )
 		{
 			return false;
 		}
+
+		// if( (state_variables[0] <= occupancy_grid_2d_->origin_x_) ||  
+		// 	(state_variables[0] >= occupancy_grid_2d_->origin_x_ + occupancy_grid_2d_->size_x_) ||
+		// 	(state_variables[1] <= occupancy_grid_2d_->origin_y_) ||
+		// 	(state_variables[1] >= occupancy_grid_2d_->origin_y_ + occupancy_grid_2d_->size_y_) )
+		// {
+		// 	return false;
+		// }
 
 		return true;
 	}
@@ -731,6 +740,16 @@ namespace ak_planner
 				interpolated_pose[0] = predecessor_state_variables[0] + interm_pose[0];
 				interpolated_pose[1] = predecessor_state_variables[1] + interm_pose[1];
 				interpolated_pose[2] = interm_pose[2];
+
+				bool is_interm_pose_collision = moveit_interface_->isStateInCollision(interpolated_pose[0], interpolated_pose[1], interpolated_pose[2]);
+				// bool is_interm_pose_collision = moveit_interface_->isStateInCollision(1.9, 1.0, 0);
+				
+				if(is_interm_pose_collision)
+				{
+					std::cout << "Collision in interpolated_path" << std::endl;
+					char c;
+					std::cin >> c;
+				}
 
 				interpolated_path.push_back(interpolated_pose);
 			}
