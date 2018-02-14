@@ -20,7 +20,7 @@ namespace ak_planner
 		obstacle1[3] = 1.5;    		//size x
 		obstacle1[4] = 1.5;    		//size y
 		obstacle1[5] = 1;      		//size z
-		obstacles_.push_back(obstacle1);
+		// obstacles_.push_back(obstacle1);
 
 		start_pose_.resize(3);
 		start_pose_[0] = 0.0;
@@ -88,6 +88,10 @@ namespace ak_planner
 		final_pose_error_[2] = (goal_pose_[2] - final_pose[2]) * 180.0 / 3.142;
 		std::cout << "Error x: " << final_pose_error_[0] << "\t\tError y: " << final_pose_error_[1] << "\t\tError theta: " << final_pose_error_[2] << std::endl;
 
+		for(int i=0 ; i<interpolated_path_trajectory_.size() ; i++)
+		{
+			std::cout << "< " << interpolated_path_trajectory_[i].at(0) << " , " << interpolated_path_trajectory_[i].at(1) << " , " << interpolated_path_trajectory_[i].at(2) << " >" << std::endl;
+		}
 	}
 
 

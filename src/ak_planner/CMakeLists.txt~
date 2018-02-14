@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   message_generation
+  rospy
 )
 
 ## System dependencies are found with CMake's conventions
@@ -178,7 +179,7 @@ add_executable(planner_server_node src/planner_server_node.cpp)
 target_link_libraries(planner_server_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 add_dependencies(planner_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
-add_executable(planner_client_node src/planner_clent_node.cpp)
+add_executable(planner_client_node src/planner_client_node.cpp)
 target_link_libraries(planner_client_node ${PROJECT_NAME} ${catkin_LIBRARIES})
 add_dependencies(planner_client_node ${${PROJECT_NAME}_EXPORTED_TARGETS})
 

@@ -32,6 +32,32 @@ bool planPath(ak_planner::PlanPath::Request &req, ak_planner::PlanPath::Response
 	planner_interface.planPath(start_pose, goal_pose);
 	planner_interface.getInterpolatedPathTrajectory(path);
 
+	// Testing
+	// path.clear();
+	// path.resize(3);
+
+	// std::vector<double> way_point1;
+	// way_point1.resize(3);
+	// way_point1[0] = 0.1667;
+	// way_point1[1] = 3.0;
+	// way_point1[2] = 0.0;
+	// path.push_back(way_point1);
+
+	// std::vector<double> way_point2;
+	// way_point2.resize(3);
+	// way_point2[0] = 0.3333;
+	// way_point2[1] = 3.0;
+	// way_point2[2] = 0.0;
+	// path.push_back(way_point2);
+	
+	// std::vector<double> way_point3;
+	// way_point3.resize(3);
+	// way_point3[0] = 0.5;
+	// way_point3[1] = 3.0;
+	// way_point3[2] = 0.0;
+	// path.push_back(way_point3);
+	 
+
 	for(int i=0 ; i<path.size() ; i++)
 	{
 		geometry_msgs::Vector3 path_node;
